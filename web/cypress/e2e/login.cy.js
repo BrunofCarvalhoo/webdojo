@@ -10,8 +10,8 @@ describe('template spec', () => {  // describe deve agrupar os testes , it defin
 describe('login', () => {
   it('Deve realizar login com sucesso', () => {
 
-    cy.iniciar()
-    cy.submeterLogin('papito@webdojo.com', 'katana123')
+    cy.start()
+    cy.submitLoginForm('papito@webdojo.com', 'katana123')
 
     cy.get('[data-cy="user-name"]').should('be.visible').and('have.text', 'Fernando Papito')
 
@@ -21,8 +21,8 @@ describe('login', () => {
   })
 
    it('Nao deve logar com senha invalida', () => {
-    cy.iniciar()
-    cy.submeterLogin('papito@webdojo.com', 'katanaerrada')
+    cy.start()
+    cy.submitLoginForm('papito@webdojo.com', 'katanaerrada')
 
     cy.contains('button', 'Entrar').click()
 
@@ -32,8 +32,8 @@ describe('login', () => {
   })
 
   it('Nao deve logar com email invalido', () => {
-    cy.iniciar()
-    cy.submeterLogin('404@webdojo.com', 'katana123')
+    cy.start()
+    cy.submitLoginForm('404@webdojo.com', 'katana123')
 
     cy.contains('Acesso negado! Tente novamente.').should('be.visible')
 
