@@ -60,14 +60,72 @@ describe('Formulario de Consultoria', () => {
 
         })
 
-        cy.contains('label','termos de uso')
+        cy.contains('label', 'termos de uso')
             .find('input')
             .check()
             .should('be.checked')
 
-        cy.contains('button','Enviar formulário').click()
+        cy.contains('button', 'Enviar formulário').click()
 
         cy.contains('Sua solicitação de consultoria foi enviada com sucesso! Em breve, nossa equipe entrará em contato através do email fornecido.').should('be.visible')
+
+
+
+
+    })
+
+    it.only('Deve verificar os itens obrigatorios', () => {
+        cy.start()
+        cy.submitLoginForm('papito@webdojo.com', 'katana123')
+        cy.goTo('Formulários', 'Consultoria')
+
+        cy.contains('button', 'Enviar formulário').click()
+
+        /*
+        essa foi antes da mudança 
+
+        const mensagensDeErro = [
+            'Digite nome e sobrenome',
+            'Informe um email válido',
+            'Você precisa aceitar os termos de uso'
+        ]
+
+        mensagensDeErro.forEach((mensagem) => {
+
+            cy.contains('p', mensagem)
+                .should('be.visible')
+                .and('have.class','text-red-400')
+                .and('have.css','color','rgb(248, 113, 113)') // valida a cor do texto
+        })
+        */
+
+        const nomesCampo = [
+            'Nome Completo',
+            'Email',
+            'termos de uso'
+        ]
+        nomesCampo.forEach((campo) => {
+            if (campo === 'Nome Completo' || campo === 'Email') {
+                cy.contains('label', campo)
+                    .parent()
+                    .find('p')
+                    .should('be.visible')
+                    .and('have.text', 'Campo obrigatório')
+                    .and('have.class', 'text-red-400')
+                    .and('have.css', 'color', 'rgb(248, 113, 113)')
+
+            }
+            else {
+                cy.contains('label', campo)
+                    .parent()
+                    .find('p')
+                    .should('be.visible')
+                    .and('have.text', 'Você precisa aceitar os termos de uso')
+                    .and('have.class', 'text-red-400')
+                    .and('have.css', 'color', 'rgb(248, 113, 113)')
+            }
+
+        })
 
 
 
